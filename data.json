@@ -1,0 +1,29 @@
+[
+  {
+    "store": "Store 1",
+    "production": 120,
+    "otd": 95,
+    "energyConsumption": 1200,
+    "electricityPerCapita": 12,
+    "internalRejection": 2,
+    "status": "GOOD"
+  },
+  {
+    "store": "Store 2",
+    "production": 98,
+    "otd": 87,
+    "energyConsumption": 1450,
+    "electricityPerCapita": 18,
+    "internalRejection": 5,
+    "status": "CRITICAL"
+  },
+  {
+    "store": "Store 3",
+    "production": 135,
+    "otd": 93,
+    "energyConsumption": 1100,
+    "electricityPerCapita": 10,
+    "internalRejection": 1,
+    "status": "GOOD"
+  }
+]
