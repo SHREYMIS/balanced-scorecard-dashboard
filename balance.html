@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enterprise Balanced Scorecard Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #07111f;
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 40px;
+    }
+
+    .health-box {
+      background: linear-gradient(135deg, #00bcd4, #2196f3);
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+      min-width: 220px;
+    }
+
+    .health-box h2 {
+      font-size: 40px;
+      margin-top: 10px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #101d33;
+      border-radius: 20px;
+      padding: 25px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .card h3 {
+      color: #b0bec5;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 34px;
+      font-weight: bold;
+    }
+
+    .section {
+      background: #101d33;
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .section h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    th {
+      color: #90a4ae;
+    }
+
+    .good {
+      color: #4caf50;
+      font-weight: bold;
+    }
+
+    .warning {
+      color: #ffc107;
+      font-weight: bold;
+    }
+
+    .critical {
+      color: #f44336;
+      font-weight: bold;
+    }
+
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+    }
+
+    canvas {
+      background: #0b1528;
+      border-radius: 15px;
+      padding: 15px;
+    }
+
+    .automation {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      padding: 25px;
+      border-radius: 20px;
+      margin-top: 30px;
+      line-height: 1.8;
+    }
+
+    .automation code {
+      display: block;
+      background: rgba(255,255,255,0.08);
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      color: #4dd0e1;
+      overflow-x: auto;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #90a4ae;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <div>
+        <h1>Enterprise Balanced Scorecard</h1>
+        <p>Production • Finance • Quality • Stores • Delivery</p>
+      </div>
+
+      <div class="health-box">
+        <div>Overall Plant Health</div>
+        <h2>84%</h2>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Revenue</h3>
+        <p>₹12.4 Cr</p>
+      </div>
+
+      <div class="card">
+        <h3>OTD</h3>
+        <p>95%</p>
+      </div>
+
+      <div class="card">
+        <h3>Production</h3>
+        <p>128</p>
+      </div>
+
+      <div class="card">
+        <h3>Internal Rejection</h3>
+        <p>2%</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Store-wise KPI Monitoring</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Store</th>
+            <th>Production</th>
+            <th>OTD</th>
+            <th>Energy Consumption</th>
+            <th>Electricity Per Capita</th>
+            <th>Internal Rejection</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="storeTable">
+          <tr>
+            <td>Store 1</td>
+            <td>120</td>
+            <td>95%</td>
+            <td>1200</td>
+            <td>12</td>
+            <td>2%</td>
+            <td class="good">GOOD</td>
+          </tr>
+
+          <tr>
+            <td>Store 2</td>
+            <td>98</td>
+            <td>87%</td>
+            <td>1450</td>
+            <td>18</td>
+            <td>5%</td>
+            <td class="critical">CRITICAL</td>
+          </tr>
+
+          <tr>
+            <td>Store 3</td>
+            <td>135</td>
+            <td>93%</td>
+            <td>1100</td>
+            <td>10</td>
+            <td>1%</td>
+            <td class="good">GOOD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="charts">
+
+      <div class="section">
+        <h2>OTD Comparison</h2>
+        <canvas id="otdChart"></canvas>
+      </div>
+
+      <div class="section">
+        <h2>Energy Consumption</h2>
+        <canvas id="energyChart"></canvas>
+      </div>
+
+    </div>
+
+    <div class="section">
+      <h2>Finance Dashboard</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Target</th>
+            <th>Actual</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Revenue</td>
+            <td>ABC</td>
+            <td>₹12.4 Cr</td>
+            <td class="good">GOOD</td>
+          </tr>
+
+          <tr>
+            <td>PAT</td>
+            <td>XYZ</td>
+            <td>₹3.1 Cr</td>
+            <td class="warning">WARNING</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="automation">
+      <h2>Power Automate Integration</h2>
+
+      <p>
+        Your users will only update the Excel file in OneDrive.
+        The dashboard will refresh automatically.
+      </p>
+
+      <h3 style="margin-top:20px;">Automation Flow</h3>
+
+      <code>
+OneDrive Excel
+      ↓
+Power Automate Trigger
+      ↓
+Read Excel Table
+      ↓
+Send Data to JSON/API
+      ↓
+Dashboard Auto Updates
+      </code>
+
+      <h3 style="margin-top:20px;">Recommended Excel Table Structure</h3>
+
+      <code>
+Month | Store | KPI | Actual
+Apr   | Store 1 | OTD | 95
+Apr   | Store 2 | OTD | 87
+      </code>
+
+      <h3 style="margin-top:20px;">Power Automate Trigger</h3>
+
+      <code>
+When a file is modified
+(OneDrive for Business)
+      </code>
+
+    </div>
+
+    <div class="footer">
+      Enterprise Manufacturing KPI Dashboard • GitHub Ready • HTML + Chart.js
+    </div>
+
+  </div>
+
+  <script>
+
+    // OTD Chart
+
+    const otdCtx = document.getElementById('otdChart');
+
+    new Chart(otdCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Store 1', 'Store 2', 'Store 3'],
+        datasets: [{
+          label: 'OTD %',
+          data: [95, 87, 93],
+          backgroundColor: [
+            '#00bcd4',
+            '#f44336',
+            '#4caf50'
+          ],
+          borderRadius: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white'
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: 'white'
+            }
+          },
+          y: {
+            ticks: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    });
+
+    // Energy Chart
+
+    const energyCtx = document.getElementById('energyChart');
+
+    new Chart(energyCtx, {
+      type: 'line',
+      data: {
+        labels: ['Store 1', 'Store 2', 'Store 3'],
+        datasets: [{
+          label: 'Energy Consumption',
+          data: [1200, 1450, 1100],
+          borderColor: '#00e5ff',
+          backgroundColor: 'rgba(0,229,255,0.2)',
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white'
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: 'white'
+            }
+          },
+          y: {
+            ticks: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    });
+
+    // Future Automation Fetch Example
+
+    // fetch('data.json')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //       console.log(data)
+    //   })
+
+  </script>
+
+</body>
+</html>
