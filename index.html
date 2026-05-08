@@ -2,432 +2,538 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Enterprise Balanced Scorecard Dashboard</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
     }
 
-    body {
-      background: #07111f;
-      color: white;
-      padding: 20px;
+    body{
+      background:#07111f;
+      color:white;
+      padding:20px;
     }
 
-    .container {
-      max-width: 1400px;
-      margin: auto;
+    .container{
+      max-width:1400px;
+      margin:auto;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
+    .header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:30px;
+      flex-wrap:wrap;
+      gap:20px;
     }
 
-    .header h1 {
-      font-size: 40px;
+    .header h1{
+      font-size:42px;
     }
 
-    .health-box {
-      background: linear-gradient(135deg, #00bcd4, #2196f3);
-      padding: 20px;
-      border-radius: 20px;
-      text-align: center;
-      min-width: 220px;
+    .header p{
+      color:#90a4ae;
+      margin-top:8px;
     }
 
-    .health-box h2 {
-      font-size: 40px;
-      margin-top: 10px;
+    .health-box{
+      background:linear-gradient(135deg,#00bcd4,#2196f3);
+      padding:20px;
+      border-radius:20px;
+      min-width:220px;
+      text-align:center;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
+    .health-box h2{
+      font-size:40px;
+      margin-top:10px;
     }
 
-    .card {
-      background: #101d33;
-      border-radius: 20px;
-      padding: 25px;
-      border: 1px solid rgba(255,255,255,0.1);
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      margin-bottom:30px;
     }
 
-    .card h3 {
-      color: #b0bec5;
-      margin-bottom: 10px;
+    .card{
+      background:#101d33;
+      border-radius:20px;
+      padding:25px;
+      border:1px solid rgba(255,255,255,0.08);
     }
 
-    .card p {
-      font-size: 34px;
-      font-weight: bold;
+    .card h3{
+      color:#90a4ae;
+      margin-bottom:10px;
     }
 
-    .section {
-      background: #101d33;
-      border-radius: 20px;
-      padding: 25px;
-      margin-bottom: 30px;
-      border: 1px solid rgba(255,255,255,0.1);
+    .card p{
+      font-size:34px;
+      font-weight:bold;
     }
 
-    .section h2 {
-      margin-bottom: 20px;
-      font-size: 28px;
+    .section{
+      background:#101d33;
+      border-radius:20px;
+      padding:25px;
+      margin-bottom:30px;
+      border:1px solid rgba(255,255,255,0.08);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .section h2{
+      margin-bottom:20px;
+      font-size:28px;
     }
 
-    th, td {
-      padding: 16px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+    table{
+      width:100%;
+      border-collapse:collapse;
     }
 
-    th {
-      color: #90a4ae;
+    th,td{
+      padding:16px;
+      text-align:left;
+      border-bottom:1px solid rgba(255,255,255,0.08);
     }
 
-    .good {
-      color: #4caf50;
-      font-weight: bold;
+    th{
+      color:#90a4ae;
     }
 
-    .warning {
-      color: #ffc107;
-      font-weight: bold;
+    .good{
+      color:#4caf50;
+      font-weight:bold;
     }
 
-    .critical {
-      color: #f44336;
-      font-weight: bold;
+    .warning{
+      color:#ffc107;
+      font-weight:bold;
     }
 
-    .charts {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 20px;
+    .critical{
+      color:#f44336;
+      font-weight:bold;
     }
 
-    canvas {
-      background: #0b1528;
-      border-radius: 15px;
-      padding: 15px;
+    .charts{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+      gap:20px;
     }
 
-    .automation {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      padding: 25px;
-      border-radius: 20px;
-      margin-top: 30px;
-      line-height: 1.8;
+    canvas{
+      background:#0b1528;
+      border-radius:15px;
+      padding:15px;
     }
 
-    .automation code {
-      display: block;
-      background: rgba(255,255,255,0.08);
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 15px;
-      color: #4dd0e1;
-      overflow-x: auto;
+    .automation{
+      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      padding:25px;
+      border-radius:20px;
+      line-height:1.8;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #90a4ae;
+    .automation code{
+      display:block;
+      background:rgba(255,255,255,0.08);
+      padding:15px;
+      border-radius:12px;
+      margin-top:15px;
+      color:#4dd0e1;
+      overflow-x:auto;
+      white-space:pre-wrap;
+    }
+
+    .footer{
+      text-align:center;
+      margin-top:40px;
+      color:#90a4ae;
+    }
+
+    @media(max-width:768px){
+
+      .header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .header h1{
+        font-size:30px;
+      }
+
     }
 
   </style>
 </head>
+
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="header">
-      <div>
-        <h1>Enterprise Balanced Scorecard</h1>
-        <p>Production • Finance • Quality • Stores • Delivery</p>
-      </div>
+  <div class="header">
 
-      <div class="health-box">
-        <div>Overall Plant Health</div>
-        <h2>84%</h2>
-      </div>
+    <div>
+      <h1>Enterprise Balanced Scorecard</h1>
+      <p>Production • Finance • Quality • Delivery • Stores</p>
     </div>
 
-    <div class="cards">
-      <div class="card">
-        <h3>Revenue</h3>
-        <p>₹12.4 Cr</p>
-      </div>
+    <div class="health-box">
+      <div>Overall Plant Health</div>
+      <h2 id="plantHealth">84%</h2>
+    </div>
 
-      <div class="card">
-        <h3>OTD</h3>
-        <p>95%</p>
-      </div>
+  </div>
 
-      <div class="card">
-        <h3>Production</h3>
-        <p>128</p>
-      </div>
+  <div class="cards">
 
-      <div class="card">
-        <h3>Internal Rejection</h3>
-        <p>2%</p>
-      </div>
+    <div class="card">
+      <h3>Total Production</h3>
+      <p id="productionValue">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Average OTD</h3>
+      <p id="otdValue">0%</p>
+    </div>
+
+    <div class="card">
+      <h3>Internal Rejection</h3>
+      <p id="rejectionValue">0%</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Revenue</h3>
+      <p>₹12.4 Cr</p>
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <h2>Store-wise KPI Monitoring</h2>
+
+    <table>
+
+      <thead>
+
+      <tr>
+        <th>Store</th>
+        <th>Production</th>
+        <th>OTD</th>
+        <th>Energy Consumption</th>
+        <th>Electricity Per Capita</th>
+        <th>Internal Rejection</th>
+        <th>Status</th>
+      </tr>
+
+      </thead>
+
+      <tbody id="storeTable"></tbody>
+
+    </table>
+
+  </div>
+
+  <div class="charts">
+
+    <div class="section">
+      <h2>OTD Comparison</h2>
+      <canvas id="otdChart"></canvas>
     </div>
 
     <div class="section">
-      <h2>Store-wise KPI Monitoring</h2>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Store</th>
-            <th>Production</th>
-            <th>OTD</th>
-            <th>Energy Consumption</th>
-            <th>Electricity Per Capita</th>
-            <th>Internal Rejection</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-
-        <tbody id="storeTable">
-          <tr>
-            <td>Store 1</td>
-            <td>120</td>
-            <td>95%</td>
-            <td>1200</td>
-            <td>12</td>
-            <td>2%</td>
-            <td class="good">GOOD</td>
-          </tr>
-
-          <tr>
-            <td>Store 2</td>
-            <td>98</td>
-            <td>87%</td>
-            <td>1450</td>
-            <td>18</td>
-            <td>5%</td>
-            <td class="critical">CRITICAL</td>
-          </tr>
-
-          <tr>
-            <td>Store 3</td>
-            <td>135</td>
-            <td>93%</td>
-            <td>1100</td>
-            <td>10</td>
-            <td>1%</td>
-            <td class="good">GOOD</td>
-          </tr>
-        </tbody>
-      </table>
+      <h2>Energy Consumption</h2>
+      <canvas id="energyChart"></canvas>
     </div>
 
-    <div class="charts">
+  </div>
 
-      <div class="section">
-        <h2>OTD Comparison</h2>
-        <canvas id="otdChart"></canvas>
-      </div>
+  <div class="section">
 
-      <div class="section">
-        <h2>Energy Consumption</h2>
-        <canvas id="energyChart"></canvas>
-      </div>
+    <h2>Finance Dashboard</h2>
 
-    </div>
+    <table>
 
-    <div class="section">
-      <h2>Finance Dashboard</h2>
+      <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Target</th>
+        <th>Actual</th>
+        <th>Status</th>
+      </tr>
+      </thead>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Target</th>
-            <th>Actual</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      <tbody>
 
-        <tbody>
-          <tr>
-            <td>Revenue</td>
-            <td>ABC</td>
-            <td>₹12.4 Cr</td>
-            <td class="good">GOOD</td>
-          </tr>
+      <tr>
+        <td>Revenue</td>
+        <td>ABC</td>
+        <td>₹12.4 Cr</td>
+        <td class="good">GOOD</td>
+      </tr>
 
-          <tr>
-            <td>PAT</td>
-            <td>XYZ</td>
-            <td>₹3.1 Cr</td>
-            <td class="warning">WARNING</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <tr>
+        <td>PAT</td>
+        <td>XYZ</td>
+        <td>₹3.1 Cr</td>
+        <td class="warning">WARNING</td>
+      </tr>
 
-    <div class="automation">
-      <h2>Power Automate Integration</h2>
+      </tbody>
 
-      <p>
-        Your users will only update the Excel file in OneDrive.
-        The dashboard will refresh automatically.
-      </p>
+    </table>
 
-      <h3 style="margin-top:20px;">Automation Flow</h3>
+  </div>
 
-      <code>
+  <div class="automation">
+
+    <h2>Power Automate Integration</h2>
+
+    <p>
+      Users only update Excel in OneDrive.
+      Dashboard refreshes automatically.
+    </p>
+
+    <h3 style="margin-top:20px;">Automation Flow</h3>
+
+    <code>
 OneDrive Excel
       ↓
 Power Automate Trigger
       ↓
 Read Excel Table
       ↓
-Send Data to JSON/API
+Update data.json
       ↓
-Dashboard Auto Updates
-      </code>
+Dashboard Auto Refresh
+    </code>
 
-      <h3 style="margin-top:20px;">Recommended Excel Table Structure</h3>
+    <h3 style="margin-top:20px;">Recommended Excel Table</h3>
 
-      <code>
+    <code>
 Month | Store | KPI | Actual
 Apr   | Store 1 | OTD | 95
 Apr   | Store 2 | OTD | 87
-      </code>
-
-      <h3 style="margin-top:20px;">Power Automate Trigger</h3>
-
-      <code>
-When a file is modified
-(OneDrive for Business)
-      </code>
-
-    </div>
-
-    <div class="footer">
-      Enterprise Manufacturing KPI Dashboard • GitHub Ready • HTML + Chart.js
-    </div>
+    </code>
 
   </div>
 
-  <script>
+  <div class="footer">
+    Enterprise Manufacturing KPI Dashboard • HTML + Chart.js + GitHub
+  </div>
 
-    // OTD Chart
+</div>
 
-    const otdCtx = document.getElementById('otdChart');
+<script>
 
-    new Chart(otdCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Store 1', 'Store 2', 'Store 3'],
-        datasets: [{
-          label: 'OTD %',
-          data: [95, 87, 93],
-          backgroundColor: [
+let otdChart;
+let energyChart;
+
+async function loadDashboard(){
+
+  const response = await fetch('data.json');
+  const data = await response.json();
+
+  const table = document.getElementById('storeTable');
+
+  table.innerHTML = '';
+
+  let totalProduction = 0;
+  let totalOTD = 0;
+  let totalRejection = 0;
+
+  const stores = [];
+  const otdValues = [];
+  const energyValues = [];
+
+  data.forEach(item => {
+
+    stores.push(item.store);
+    otdValues.push(item.otd);
+    energyValues.push(item.energyConsumption);
+
+    totalProduction += item.production;
+    totalOTD += item.otd;
+    totalRejection += item.internalRejection;
+
+    let statusClass = 'good';
+
+    if(item.status === 'CRITICAL'){
+      statusClass = 'critical';
+    }
+
+    if(item.status === 'WARNING'){
+      statusClass = 'warning';
+    }
+
+    table.innerHTML += `
+      <tr>
+        <td>${item.store}</td>
+        <td>${item.production}</td>
+        <td>${item.otd}%</td>
+        <td>${item.energyConsumption}</td>
+        <td>${item.electricityPerCapita}</td>
+        <td>${item.internalRejection}%</td>
+        <td class="${statusClass}">
+          ${item.status}
+        </td>
+      </tr>
+    `;
+
+  });
+
+  const avgOTD = (
+    totalOTD / data.length
+  ).toFixed(1);
+
+  const avgRejection = (
+    totalRejection / data.length
+  ).toFixed(1);
+
+  document.getElementById('productionValue')
+    .innerText = totalProduction;
+
+  document.getElementById('otdValue')
+    .innerText = avgOTD + '%';
+
+  document.getElementById('rejectionValue')
+    .innerText = avgRejection + '%';
+
+  // Destroy previous charts
+
+  if(otdChart){
+    otdChart.destroy();
+  }
+
+  if(energyChart){
+    energyChart.destroy();
+  }
+
+  // OTD CHART
+
+  otdChart = new Chart(
+    document.getElementById('otdChart'),
+    {
+      type:'bar',
+
+      data:{
+        labels:stores,
+
+        datasets:[{
+          label:'OTD %',
+          data:otdValues,
+
+          backgroundColor:[
             '#00bcd4',
             '#f44336',
             '#4caf50'
           ],
-          borderRadius: 10
+
+          borderRadius:10
         }]
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            labels: {
-              color: 'white'
+
+      options:{
+        responsive:true,
+
+        plugins:{
+          legend:{
+            labels:{
+              color:'white'
             }
           }
         },
-        scales: {
-          x: {
-            ticks: {
-              color: 'white'
+
+        scales:{
+
+          x:{
+            ticks:{
+              color:'white'
             }
           },
-          y: {
-            ticks: {
-              color: 'white'
+
+          y:{
+            ticks:{
+              color:'white'
             }
           }
+
         }
       }
-    });
+    }
+  );
 
-    // Energy Chart
+  // ENERGY CHART
 
-    const energyCtx = document.getElementById('energyChart');
+  energyChart = new Chart(
+    document.getElementById('energyChart'),
+    {
+      type:'line',
 
-    new Chart(energyCtx, {
-      type: 'line',
-      data: {
-        labels: ['Store 1', 'Store 2', 'Store 3'],
-        datasets: [{
-          label: 'Energy Consumption',
-          data: [1200, 1450, 1100],
-          borderColor: '#00e5ff',
-          backgroundColor: 'rgba(0,229,255,0.2)',
-          tension: 0.4,
-          fill: true
+      data:{
+        labels:stores,
+
+        datasets:[{
+          label:'Energy Consumption',
+
+          data:energyValues,
+
+          borderColor:'#00e5ff',
+
+          backgroundColor:'rgba(0,229,255,0.2)',
+
+          tension:0.4,
+
+          fill:true
         }]
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            labels: {
-              color: 'white'
+
+      options:{
+        responsive:true,
+
+        plugins:{
+          legend:{
+            labels:{
+              color:'white'
             }
           }
         },
-        scales: {
-          x: {
-            ticks: {
-              color: 'white'
+
+        scales:{
+
+          x:{
+            ticks:{
+              color:'white'
             }
           },
-          y: {
-            ticks: {
-              color: 'white'
+
+          y:{
+            ticks:{
+              color:'white'
             }
           }
+
         }
       }
-    });
+    }
+  );
 
-    // Future Automation Fetch Example
+}
 
-    // fetch('data.json')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //       console.log(data)
-    //   })
+loadDashboard();
 
-  </script>
+</script>
 
 </body>
 </html>
